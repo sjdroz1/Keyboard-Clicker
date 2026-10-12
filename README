@@ -1,1 +1,53 @@
+# E Clicker
 
+A small Windows utility that taps the **E** key every **10 seconds** while FiveM (or GTA5) is the foreground window.
+
+It uses the normal Windows `SendInput` API with a keyboard scan code. It does not attach to the game, read game memory, or change game files. Many FiveM servers still forbid input macros, and using one can get you kicked or banned. Check that server's rules before turning it on.
+
+The script starts **paused**. Nothing is pressed until you opt in with the toggle key.
+
+## Run it
+
+1. Copy this folder onto a Windows PC.
+2. Double-click `Start-E-Clicker.bat`.
+3. Start FiveM and click the game window so it is in front.
+4. Press **F8** to start tapping E. Press **F8** again to pause.
+5. Press **F9** to quit.
+
+If the game window is not in front, the timer waits and does not type E into other programs.
+
+FiveM is often started with administrator rights. Windows blocks simulated keys from a normal window into an elevated game. If E never arrives, close the clicker, right-click `Start-E-Clicker.bat`, and choose **Run as administrator**.
+
+Borderless windowed mode accepts these taps more reliably than exclusive fullscreen.
+
+## Controls
+
+| Key | Action |
+| --- | --- |
+| F8 | Start or pause |
+| F9 | Quit |
+
+## Options
+
+Run from PowerShell if you want a different letter, interval, or hotkeys:
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File .\E-Clicker.ps1 -Key E -IntervalSeconds 10 -ToggleKey F8 -QuitKey F9
+```
+
+| Parameter | Default | Meaning |
+| --- | --- | --- |
+| `-Key` | `E` | Letter to tap (A-Z) |
+| `-IntervalSeconds` | `10` | Delay between taps (1-3600) |
+| `-ToggleKey` | `F8` | Start/pause key (`A`-`Z`, `F1`-`F12`, `End`, or `Pause`) |
+| `-QuitKey` | `F9` | Quit key |
+| `-AnyWindow` | off | Also tap when the game is not the foreground window |
+| `-GameProcessPattern` | FiveM or GTA5 | Regex matched against the foreground process name |
+
+The first tap happens as soon as you press F8 and the game is in front. Later taps follow every 10 seconds.
+
+To allow taps in any foreground window:
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File .\E-Clicker.ps1 -AnyWindow
+```
