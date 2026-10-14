@@ -53,15 +53,17 @@ $ErrorActionPreference = 'Stop'
 function ConvertTo-VirtualKey {
     param([string]$Name)
 
+    # PowerShell's type name for a 16-bit unsigned integer is [uint16].
+    # The C# name [ushort] is not a PowerShell type and stops the script.
     $normalized = $Name.ToUpperInvariant()
     if ($normalized -match '^F([1-9]|1[0-2])$') {
-        return [ushort](0x70 + [int]$Matches[1] - 1)
+        return [uint16](0x70 + [int]$Matches[1] - 1)
     }
     if ($normalized -match '^[A-Z]$') {
-        return [ushort][byte][char]$normalized
+        return [uint16][byte][char]$normalized
     }
-    if ($normalized -eq 'END') { return [ushort]0x23 }
-    if ($normalized -eq 'PAUSE') { return [ushort]0x13 }
+    if ($normalized -eq 'END') { return [uint16]0x23 }
+    if ($normalized -eq 'PAUSE') { return [uint16]0x13 }
 
     throw "Unsupported key '$Name'. Use a letter A-Z, F1-F12, End, or Pause."
 }
@@ -187,14 +189,14 @@ $script:inputReady = $true
 
 function Release-TapKey {
     if ($script:inputReady) {
-        [void][EClickerNative]::PressScan([ushort]$script:tapVirtualKey, $true)
+        [void][EClickerNative]::PressScan([uint16]$script:tapVirtualKey, $true)
     }
 }
 
 function Send-KeyTap {
-    $downCount = [EClickerNative]::PressScan([ushort]$script:tapVirtualKey, $false)
+    $downCount = [EClickerNative]::PressScan([uint16]$script:tapVirtualKey, $false)
     Start-Sleep -Milliseconds 80
-    $upCount = [EClickerNative]::PressScan([ushort]$script:tapVirtualKey, $true)
+    $upCount = [EClickerNative]::PressScan([uint16]$script:tapVirtualKey, $true)
     if ($downCount -eq 1 -and $upCount -eq 1) {
         return 'sent'
     }
