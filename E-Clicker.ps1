@@ -4,18 +4,18 @@
     Taps a keyboard key on a timer while a game window is in the foreground.
 
 .DESCRIPTION
-    Sends the E key (by default) every 10 seconds using the Windows SendInput
+    Sends the E key (by default) every 5 seconds using the Windows SendInput
     API with a hardware scan code, so fullscreen games receive a normal key tap.
     Starts paused. Focus FiveM, then press the toggle key.
 
 .PARAMETER IntervalSeconds
-    Seconds between taps. Default is 10.
+    Seconds between taps. Default is 5.
 
 .PARAMETER Key
     Letter to tap. Default is E.
 
 .PARAMETER ToggleKey
-    Key that turns tapping on and off. Default is F8.
+    Key that turns tapping on and off. Default is F11.
 
 .PARAMETER QuitKey
     Key that stops the script. Default is F9.
@@ -31,13 +31,13 @@
 [CmdletBinding()]
 param(
     [ValidateRange(1, 3600)]
-    [int]$IntervalSeconds = 10,
+    [int]$IntervalSeconds = 5,
 
     [ValidatePattern('^[A-Za-z]$')]
     [string]$Key = 'E',
 
     [ValidateNotNullOrEmpty()]
-    [string]$ToggleKey = 'F8',
+    [string]$ToggleKey = 'F11',
 
     [ValidateNotNullOrEmpty()]
     [string]$QuitKey = 'F9',
